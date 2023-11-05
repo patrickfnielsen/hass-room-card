@@ -1,0 +1,19 @@
+{
+  "name": "hass-room-card",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src",
+  "scripts": {
+    "build": "npx webpack --mode production --output-filename room-card.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "webpack": "^5.89.0",
+    "webpack-cli": "^5.1.4"
+  },
+  "dependencies": {
+    "lit": "^3.0.2"
+  }
+}

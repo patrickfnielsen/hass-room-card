@@ -1,0 +1,6 @@
+{
+    "name": "Room Card",
+    "filename": "room-card.js",
+    "homeassistant": "2023.7.0",
+    "render_readme": true
+}
