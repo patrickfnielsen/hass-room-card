@@ -14,7 +14,7 @@
 
 
 ## What is Room Card
-Room Card is designed to quckly show the state of a room, and when pressed it can navigate to a page for that room.
+Room Card is designed to quickly show the state of a room, and when pressed it can navigate to a different page.
 
 ## Installation
 
