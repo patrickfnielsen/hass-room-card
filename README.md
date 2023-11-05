@@ -45,9 +45,9 @@ Currently the lovelace editor is not supported, but you can use `yaml`:.
 | Name                  | Type            | Default     | Description                                                                                                                         |
 | :-------------------- | :-------------- | :---------- | :---------------------------------------------------------------------------------------------------------------------------------- |
 | `icon`                | string          | Required    | Icon to render.                                                                                                                     |
-| `name`             | string          | Required    | Name of the room to render.                                                                                                         |
+| `name`                | string          | Required    | Name of the room to render.                                                                                                         |
 | `secondary`           | string          | Optional    | Secondary info to render. May contain [templates](https://www.home-assistant.io/docs/configuration/templating/).                    |
-| `navigate`          | string          | Optional    | Path to navigate to on press.                                                                                                       |
+| `navigate`            | string          | Optional    | Path to navigate to on press.                                                                                                       |
 | `entities`            | list            | Optional    | Room state entities, supports two types entity and template.                                                                        |
 
 <br>
@@ -58,9 +58,9 @@ Room State Entity
 | `type`                | enum            | Required    | Use `entity` or `template`                                                                                                          |
 | `icon`                | string          | Required    | Icon to render.                                                                                                                     |
 | `iconOff`             | string          | Optional    | Icon to render when state is off, if not set the icon will not be changed.                                                          |
-| `entity`              | string          | Required    | Required if type is entity, the state from this will be used.                                                                       |
-| `onState`             | string          | Required    | Required if type is entity, the state that will be considered as on.                                                                |
-| `condition`           | string          | Required    | Required if type is template. Supports template values, return any value for on state, and empty for off.                           |
+| `entity`              | string          | Required    | Required if type is `entity`, the state from this will be used.                                                                     |
+| `onState`             | string          | Required    | Required if type is `entity`, the state that will be considered as on.                                                              |
+| `condition`           | string          | Required    | Required if type is `template`. Supports template values, return any value for on state, and empty for off.                         |
 
 
 
