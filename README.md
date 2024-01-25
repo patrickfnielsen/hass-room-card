@@ -50,7 +50,7 @@ Currently the lovelace editor is not supported, but you can use `yaml`:.
 | `name`                | string          | Required    | Name of the room to render.                                                                                                         |
 | `secondary`           | string          | Optional    | Secondary info to render. May contain [templates](https://www.home-assistant.io/docs/configuration/templating/).                    |
 | `navigate`            | string          | Optional    | Path to navigate to on press.                                                                                                       |
-| `entities`            | list            | Optional    | Room state entities, supports two types: entity and template.                                                                       |
+| `entities`            | list            | Optional    | Room state entities, supports two types: entity and [templates](https://www.home-assistant.io/docs/configuration/templating/).      |
 
 <br>
 
