@@ -329,7 +329,7 @@ class RoomCard extends LitElement {
 customElements.define("room-card", RoomCard);
 
 console.log(
-    `%c RoomCard %c ${packageInfo.version} TEST`,
+    `%c RoomCard %c ${packageInfo.version}`,
     "color: white; background: #039be5; font-weight: 700;",
     "color: #039be5; background: white; font-weight: 700;"
 );
