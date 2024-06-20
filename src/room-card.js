@@ -27,48 +27,20 @@ class RoomCard extends LitElement {
         this._unsubRenderTemplates = new Map()
     }
 
-    // The render() function of a LitElement returns the HTML of your card, and any time one or the
-    // properties defined above are updated, the correct parts of the rendered html are magically
-    // replaced with the new values.  Check https://lit.dev for more info.
-    render() {
-        const secondary = this._getValue(this._config.secondary)
-        return html`
-            <ha-card @click=${this._handleAction}>
-                <div class="container flex-column">
-                    <div class="icon">
-                        <ha-icon .icon=${this._config.icon} />
-                    </div>
-
-                    <div class="flex-column">
-                        <span class="primary">${this._config.name}</span>
-                        <span class="secondary">${secondary}</span>
-                    </div>
-
-                    <div class="states">
-                    ${this._config.entities.map((item) => {
-                        return this._getItemHTML(item)
-                    })}
-                    </div>
-                </div>
-            </ha-card>
-        `
-    }
-
     // Called by HAAS when config is changed
     setConfig(config) {
         this._tryDisconnect()
-
-        if (!config.icon) {
-            throw new Error("You need to define an Icon for the room")
-        }
 
         if (!config.name) {
             throw new Error("You need to define a name for the room")
         }
 
+        if (!config.icon) {
+            throw new Error("You need to define an Icon for the room")
+        }
+
         this._config = {
-            navigate: "#",
-            secondary: "{{}}",
+            secondary: "",
             entities: [],
             ...config
         }
@@ -95,23 +67,57 @@ class RoomCard extends LitElement {
         this._tryDisconnect()
     }
 
+    // Register our custom editor
+    static getConfigElement() {
+        return document.createElement("room-card-editor");
+    }
+
+    // The render() function of a LitElement returns the HTML of your card, and any time one or the
+    // properties defined above are updated, the correct parts of the rendered html are magically
+    // replaced with the new values.  Check https://lit.dev for more info.
+    render() {
+        const secondary = this._getValueRawOrTemplate(this._config.secondary)
+        return html`
+            <ha-card @click=${this._handleAction}>
+                <div class="container flex-column">
+                    <div class="icon" style="--icon-color: ${this._getValueRawOrTemplate(this._config?.icon_color) ?? 'rgb(var(--rgb-white))'};">
+                        <ha-icon .icon=${this._config.icon} />
+                    </div>
+
+                    <div class="flex-column">
+                        <span class="primary">${this._config.name}</span>
+                        <span class="secondary">${secondary}</span>
+                    </div>
+
+                    <div class="states">
+                    ${this._config.entities.map((item) => {
+                        return this._getItemHTML(item)
+                    })}
+                    </div>
+                </div>
+            </ha-card>
+        `
+    }
+
     // Get the state icon for an item
     _getItemHTML(item) {
         let stateValue = ""
         let stateIsOn = false
         if (item.type === "entity") {
             stateValue = this._getValue(item.entity)
-            stateIsOn = stateValue == item.onState
+            stateIsOn = stateValue == item.on_state
         } else if (item.type == "template") {
             stateValue = this._getValue(item.condition)
             stateIsOn = stateValue != ""
         } else {
-            return html`<span>invalid config</span>`
+            return html`<span>invalid type</span>`
         }
 
-        const icon = stateIsOn ? item.icon : item.iconOff ? item.iconOff : item.icon
+        const icon = stateIsOn ? item.icon : item.icon_off ? item.icon_off : item.icon
         const iconClass = !stateIsOn ? 'off' : ''
-        return html`<ha-icon class="${iconClass}" .icon=${icon} />`
+        return html`<ha-icon class="${iconClass}" .icon=${icon} style="
+                      --state-icon-color-off: ${this._getValueRawOrTemplate(item.color_off) ?? '#585858'};
+                      --state-icon-color: ${this._getValueRawOrTemplate(item.color_on) ?? 'white'};"/>`
     }
 
     // Check if an item is a template
@@ -131,14 +137,24 @@ class RoomCard extends LitElement {
             : this.hass.states[item]?.state
     }
 
+    // Returns the raw value passed if not a template, otherwise evaluate the template
+    _getValueRawOrTemplate(item) {
+        if (this._isTemplate(item)) {
+            this._tryConnect(item)
+        }
+
+        return this._isTemplate(item)
+            ? this._templateResults[item]?.result?.toString()
+            : item
+    }
+
     // Handle navigation on click
     _handleAction() {
+        if (!this._config?.action) return
+
         this._fireEvent(this, "hass-action", {
             config: {
-                tap_action: {
-                    action: "navigate",
-                    navigation_path: this._config.navigate,
-                }
+                tap_action: this._config.action
             },
             action: "tap"
         })
@@ -231,11 +247,8 @@ class RoomCard extends LitElement {
         return css`
             :host {
                 --main-color: rgb(var(--rgb-grey));
-                --icon-color: rgb(var(--rgb-white));
                 --icon-size:  2rem;
                 --state-icon-size: 1.35rem;
-                --state-icon-color-off: #585858;
-                --state-icon-color: white;
                 --state-icon-padding: 2px;
                 --card-primary-font-weight: 14px;
                 --card-primary-font-weight: bold;
@@ -316,7 +329,7 @@ class RoomCard extends LitElement {
 customElements.define("room-card", RoomCard);
 
 console.log(
-    `%c RoomCard %c ${packageInfo.version}`,
+    `%c RoomCard %c ${packageInfo.version} TEST`,
     "color: white; background: #039be5; font-weight: 700;",
     "color: #039be5; background: white; font-weight: 700;"
 );

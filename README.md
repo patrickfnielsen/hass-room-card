@@ -42,16 +42,16 @@ Room Card is available in [HACS][hacs] (Home Assistant Community Store).
         ```
 
 ## Configuration variables
-Currently the lovelace editor is not supported, but you can use `yaml`:.
+The editor is supported from version 2.0.0, but if you want to use `yaml`, heres the properties:
 
 | Name                  | Type            | Default     | Description                                                                                                                         |
 | :-------------------- | :-------------- | :---------- | :---------------------------------------------------------------------------------------------------------------------------------- |
-| `icon`                | string          | Required    | Icon to render.                                                                                                                     |
 | `name`                | string          | Required    | Name of the room to render.                                                                                                         |
+| `icon`                | string          | Required    | Icon to render.                                                                                                                     |
+| `icon_color`          | string          | Optional    | The color of the room icon.  May contain [templates](https://www.home-assistant.io/docs/configuration/)                                                                                                                   |
 | `secondary`           | string          | Optional    | Secondary info to render. May contain [templates](https://www.home-assistant.io/docs/configuration/templating/).                    |
 | `navigate`            | string          | Optional    | Path to navigate to on press.                                                                                                       |
-| `entities`            | list            | Optional    | Room state entities, supports two types: entity and [templates](https://www.home-assistant.io/docs/configuration/templating/).      |
-
+| `entities`            | list            | Optional    | Room state entities                                                                       |
 <br>
 
 Room State Entity
@@ -59,17 +59,20 @@ Room State Entity
 | :-------------------- | :-------------- | :---------- | :---------------------------------------------------------------------------------------------------------------------------------- |
 | `type`                | enum            | Required    | Use `entity` or `template`                                                                                                          |
 | `icon`                | string          | Required    | Icon to render.                                                                                                                     |
-| `iconOff`             | string          | Optional    | Icon to render when state is off, if not set the icon will not be changed.                                                          |
+| `icon_off`            | string          | Optional    | Icon to render when state is off, if not set the icon will not be changed.                                                          |
 | `entity`              | string          | Required    | Required if type is `entity`, the state from this will be used.                                                                     |
-| `onState`             | string          | Required    | Required if type is `entity`, the state that will be considered as on.                                                              |
+| `on_state`            | string          | Required    | Required if type is `entity`, the state that will be considered as on.                                                              |
 | `condition`           | string          | Required    | Required if type is `template`. Supports template values, return any value for on state, and empty for off.                         |
+| `color_on`   | string          | Optional    | The color for entitie icons when on. May contain [templates](https://www.home-assistant.io/docs/configuration/)                                                                           |
+| `color_off`  | string          | Optional    | The color for entitie icons when off. May contain [templates](https://www.home-assistant.io/docs/configuration/)                                                                          |
 
 
 
-### Example
+### YAML Example
 ```yaml
 type: custom:room-card
 icon: mdi:home-outline
+icon_color: "#333333"
 name: Living Room
 secondary: '{{states("sensor.living_room_temperature")}} °C'
 navigate: /dashboard/living-room
@@ -77,37 +80,35 @@ entities:
   - type: entity
     entity: climate.climate_living_room
     icon: mdi:heat-wave
-    onState: heating
+    on_state: heating
   - type: template
     icon: mdi:ceiling-light
-    iconOff: mdi:ceiling-light-outline
+    icon_off: mdi:ceiling-light-outline
     condition: >-
       {% set lights_on = expand(area_entities('Living Room')) |
       selectattr('domain','eq','light') | selectattr('state','eq','on') | list |
       count %}{% if lights_on > 0 %}true{% endif %}
   - type: entity
     entity: binary_sensor.living_room_presence_presence
-    onState: 'on'
+    on_state: 'on'
     icon: mdi:motion-sensor
-    iconOff: mdi:motion-sensor-off
+    icon_off: mdi:motion-sensor-off
   - type: entity
     entity: media_player.living_room
-    onState: playing
+    on_state: playing
     icon: mdi:speaker
-    iconOff: mdi:speaker-off
+    icon_off: mdi:speaker-off
   - type: entity
     entity: media_player.living_room_tv
-    onState: playing
+    on_state: playing
     icon: mdi:television-classic
-    iconOff: mdi:television-classic-off
+    icon_off: mdi:television-classic-off
 
 ```
 
 
 ### Theme customization
-
 Room Card works without theme but you can add a theme like [Noctis](https://github.com/aFFekopp/noctis). If you want more information about themes, check out the official [Home Assistant documentation about themes][home-assitant-theme-docs].
-
 
 <!-- Badges -->
 [hacs-url]: https://github.com/hacs/integration
