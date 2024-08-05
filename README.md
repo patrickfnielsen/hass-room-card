@@ -50,7 +50,7 @@ The editor is supported from version 2.0.0, but if you want to use `yaml`, heres
 | `icon`                | string          | Required    | Icon to render.                                                                                                                     |
 | `icon_color`          | string          | Optional    | The color of the room icon.  May contain [templates](https://www.home-assistant.io/docs/configuration/)                                                                                                                   |
 | `secondary`           | string          | Optional    | Secondary info to render. May contain [templates](https://www.home-assistant.io/docs/configuration/templating/).                    |
-| `navigate`            | string          | Optional    | Path to navigate to on press.                                                                                                       |
+| `action  `            | string          | Optional    | Action on tap                                                                                                       |
 | `entities`            | list            | Optional    | Room state entities                                                                       |
 <br>
 
@@ -75,7 +75,9 @@ icon: mdi:home-outline
 icon_color: "#333333"
 name: Living Room
 secondary: '{{states("sensor.living_room_temperature")}} °C'
-navigate: /dashboard/living-room
+action:
+  action: navigate
+  navigation_path: /lovelace/living-room
 entities:
   - type: entity
     entity: climate.climate_living_room
