@@ -22,11 +22,10 @@ Room Card is designed to quickly show the state of a room, and when pressed it c
 Room Card is available in [HACS][hacs] (Home Assistant Community Store).
 1. Install HACS if you don't have it already
 2. Open HACS in Home Assistant
-3. Go to "Frontend" section
-4. Press the 3 dots in the top right, and select "Custom repositories"
-5. For repository enter "https://github.com/patrickfnielsen/hass-room-card" and category select "frontend"
-6. Click button with "+" icon
-7. Search for "Room Card"
+3. Press the 3 dots in the top right, and select "Custom repositories"
+4. For repository enter "https://github.com/patrickfnielsen/hass-room-card" and type select "Dashboard"
+5. Click button with "+" icon
+6. Search for "Room Card"
 
 ### Manual
 1. Download `room-card.js` file from the [latest release][release-url].
