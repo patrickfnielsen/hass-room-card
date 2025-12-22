@@ -230,6 +230,10 @@ class RoomCard extends LitElement {
             config.tap_action = this._config.action
         }
 
+        if (this._config?.tap_action) {
+            config.tap_action = this._config.tap_action
+        }
+
         if (this._config?.double_tap_action) {
             config.double_tap_action = this._config.double_tap_action
         } else {
